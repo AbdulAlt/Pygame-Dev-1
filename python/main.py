@@ -1,0 +1,6 @@
+f = open('c:\\Users\\44794\\Music\\Jetlearn\\Game Dev 1\\python\\A.txt', 'w')
+print('file created succesfully')
+f.write('This is a test,\nof the write function')
+f = open('c:\\Users\\44794\\Music\\Jetlearn\\Game Dev 1\\python\\A.txt', 'r')
+print('data wrote succesfully')
+print(f.readlines())
