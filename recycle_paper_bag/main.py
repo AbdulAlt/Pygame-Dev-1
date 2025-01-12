@@ -25,9 +25,9 @@ def draw():
     screen.clear()
     screen.blit('bground', (0, 0))
     if game_over:
-        display_msg('Game over, try again')
+        display_msg('Game over', 'try again!')
     elif game_complete:
-        display_msg('You won, well done!')
+        display_msg('You won', 'well done!')
     else:
         for i in items:
             i.draw()
@@ -64,7 +64,7 @@ def create_item(items_to_create):
 
 # layout items function
 def layout_items(items_to_layout):
-    num_of_gaps = len(items_to_layout + 1)
+    num_of_gaps = len(items_to_layout) + 1
     gap_size = WIDTH / num_of_gaps
     random.shuffle(items_to_layout)
     for index, items in enumerate(items_to_layout):
@@ -78,9 +78,8 @@ def animate_items(items_to_animate):
     global animation
     for i in items_to_animate:
         duration = START_SPEED - current_lv
-        i.anchor = CENTER
-        animation = animate(i, duration = duration)
-        on_finish = handle_game_over, y = HEIGHT
+        i.anchor = ('center', 'bottom')
+        animation = animate(i, duration = duration, on_finished = handle_game_over, y = HEIGHT)
         animations.append(animation)
 
 # handle_game_over function
@@ -92,7 +91,7 @@ def handle_game_over():
 def on_mouse_down(pos):
     for i in items:
         if i.collidepoint(pos):
-            if 'paper' in item.image:
+            if 'paper' in i.image:
                 handle_game_complete()
             else:
                 handle_game_over()
