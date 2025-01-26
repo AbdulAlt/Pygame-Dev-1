@@ -66,6 +66,11 @@ def draw():
     screen.draw.textbox(str(time_left), timer_box, color = 'white')
     # draw the skip button
     screen.draw.textbox('skip', skip_box, color = 'black', angle = -90)
+    screen.draw.textbox(x[0] ,question_box,color="white")
+    index=1
+    for i in answer_boxes:
+        screen.draw.textbox(x[index],i,color="white")
+        index+=1
 
 # read question file function
 def read_question_file():
