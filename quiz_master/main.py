@@ -78,9 +78,71 @@ def read_question_file():
         questions_count += 1
     q_file.close()
 
+# read next question function
+def read_next_question():
+    global question_index
+    question_index += 1
+    return questions.pop(0).split(",")
+
 # update function
 def update():
-    pass
+    mov_marque()
 
-# run the output
+# move marque function
+def mov_marque():
+    marque_box.x -= 2
+    if marque_box.right < 0:
+        marque_box.left = WIDTH
+
+# on mouse down function
+def on_mouse_down(pos):
+    index = 1
+    for i in answer_boxes:
+        if i.collidepoint(pos):
+            if index is int(x[5]):
+                correct_answer()
+            else:
+                game_over()
+        index += 1
+    if skip_box.collidepoint(pos):
+        skip_question()
+
+# correct answer function
+def correct_answer():
+    global score, time_left
+    score += 1
+    if questions:
+        x = read_next_question()
+        time_left = 10
+    else:
+        game_over()
+
+# skip question function
+def skip_question():
+    global time_left, x, is_gameover
+    if x and not is_gameover:
+        x = read_next_question()
+        time_left = 10
+
+# game over function
+def game_over():
+    global x,time_left, is_gameover
+    msg = f'Game over! You got {score} questions correct.'
+    x = [msg, '-', '-', '-', '-', '-', 5]
+    time_left = 0
+    is_gameover = True
+
+# update time left function
+def update_time_left():
+    global time_left
+    if time_left:
+        time_left -= 1
+    else:
+        game_over()
+
+# call functions
+read_question_file()
+x = read_next_question()
+print(x)
+clock.schedule_interval(update_time_left, 1)
 pgzrun.go()
