@@ -13,7 +13,6 @@ question_box = Rect(0, 0, 650, 150)
 timer_box = Rect(0, 0, 150, 150)
 answer_box_1 = Rect(0, 0, 300, 150)
 answer_box_2 = Rect(0, 0, 300, 150)
-answer_box_2 = Rect(0, 0, 300, 150)
 answer_box_3 = Rect(0, 0, 300, 150)
 answer_box_4 = Rect(0, 0, 300, 150)
 skip_box = Rect(0, 0, 200, 380)
@@ -41,6 +40,7 @@ skip_box.move_ip(700, 270)
 
 # draw function
 def draw():
+    global marque_msg
     # clear screen
     screen.clear()
     # fill screen with the black colour
@@ -48,15 +48,15 @@ def draw():
     # draw the marque box
     screen.draw.filled_rect(marque_box, 'black')
     # draw the question box
-    screen.draw.filled_rect(question_box, 'navy blue')
+    screen.draw.filled_rect(question_box, 'blue')
     # draw the timer box
-    screen.draw.filled_rect(timer_box, 'navy blue')
+    screen.draw.filled_rect(timer_box, 'blue')
     # draw the skip box
-    screen.draw.filled_rect(skip_box, 'dark green')
+    screen.draw.filled_rect(skip_box, 'green')
 
     # draw the answer boxes loop
     for i in answer_boxes:
-        screen.draw.filled_rect(i, 'dark orange')
+        screen.draw.filled_rect(i, 'orange')
 
     # marque message
     marque_msg = f'welcom to Quiz Master---?{question_index} of {questions_count}'
@@ -66,11 +66,12 @@ def draw():
     screen.draw.textbox(str(time_left), timer_box, color = 'white')
     # draw the skip button
     screen.draw.textbox('skip', skip_box, color = 'black', angle = -90)
-    screen.draw.textbox(x[0] ,question_box,color="white")
-    index=1
-    for i in answer_boxes:
-        screen.draw.textbox(x[index],i,color="white")
-        index+=1
+    if x:
+        screen.draw.textbox(x[0] ,question_box,color="white")
+        index=1
+        for i in answer_boxes:
+            screen.draw.textbox(x[index],i,color="white")
+            index+=1
 
 # read question file function
 def read_question_file():
@@ -79,7 +80,7 @@ def read_question_file():
     # create a variable for the question files
     q_file = open(question_file, 'r')
     for i in q_file:
-        questions.append(i)
+        questions.append(i.strip())
         questions_count += 1
     q_file.close()
 
@@ -101,10 +102,11 @@ def mov_marque():
 
 # on mouse down function
 def on_mouse_down(pos):
+    global x
     index = 1
     for i in answer_boxes:
         if i.collidepoint(pos):
-            if index is int(x[5]):
+            if index == int(x[5]):
                 correct_answer()
             else:
                 game_over()
@@ -114,7 +116,7 @@ def on_mouse_down(pos):
 
 # correct answer function
 def correct_answer():
-    global score, time_left
+    global score, time_left, x
     score += 1
     if questions:
         x = read_next_question()
